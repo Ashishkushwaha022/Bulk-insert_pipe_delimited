@@ -1,0 +1,19 @@
+--To drop the table
+EXEC [DBO]. [UM DRP_TABLE] 'table_name'
+
+--Create table for data to be stored
+CREATE TABLE DBO.aku_k_drive_list
+[file_name varchar(400),
+File_size varchar(200),
+modified_time varchar(200),
+mode varchar(40),
+File_owner varchar(200))
+
+Declare @FILE_PATH VARCHAR(200) ='path',
+ @FILE_NAME VARCHAR (100) = 'k_Drive_Files_updated.txt',@SQL VARCHAR(4000) 
+
+--INSERT DATA INTO RAW TABLE.
+SET @SQL ='BULK INSERT aku_k_drive_list FROM ''' + @FILE_PATH+ IIF(RIGHT (@FILE_PATH, 1) = '\','','\')+@FILE_NAME+''' WITH (BATCHSIZE = 1000000, FIRSTROW = 1, FIELDTERMINATOR = ''\|'', ROWTERMINATOR="\n", TABLOCK)' 
+
+Print(@sql)
+exec(@sql)
